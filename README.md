@@ -73,6 +73,7 @@ python generator.py
 
 compile java project in paramgroup folder
 
+``` brew install gradle@6 ```
 ```
 cd ./paramgroup
 gradle fatJar

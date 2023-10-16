@@ -1,8 +1,8 @@
-    field count{{count}} = 0
-    for field j in 0..3 do
-        for field k in 0..5 do
-            count{{count}} = count{{count}} + if wcomb[k]==comb{{comb}}[j] then 1 else 0 fi
-        endfor
-    endfor
-    r = r + if count{{count}}==3 then 1 else 0 fi
+    field mut count{{count}} = 0;
+    for u32 j in 0..3 {
+        for u32 k in 0..5 {
+            count{{count}} = count{{count}} + if wcomb[k]==comb{{comb}}[j] { 1 } else { 0 };
+        }
+    }
+    r = r + if count{{count}}==3 { 1 } else { 0 };
 

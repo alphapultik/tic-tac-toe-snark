@@ -1,47 +1,49 @@
-import "hashes/sha256/512bitPacked.code" as sha256packed
+import "/Users/vovkapultik/.zokrates/stdlib/hashes/sha256/512bitPacked.zok" as sha256packed;
 
-def main(field gameID, field[2] shaValue, private field[4] pw, private field[4] pl, private field c) -> (field):
+def main(field gameID, field[2] shaValue, private field[4] pw, private field[4] pl, private field c) -> field {
 
-    field[2] hash1 = sha256packed(pw)
-    field[2] hash2 = sha256packed(pl)
-    field[2] hash3 = sha256packed([hash1[0], hash1[1], hash2[0], hash2[1]])
-    field[2] hash4 = sha256packed([0, gameID, hash3[0], hash3[1]])
-    hash4[0] == shaValue[0]
-    hash4[1] == shaValue[1]
+    field[2] hash1 = sha256packed(pw);
+    field[2] hash2 = sha256packed(pl);
+    field[2] hash3 = sha256packed([hash1[0], hash1[1], hash2[0], hash2[1]]);
+    field[2] hash4 = sha256packed([0, gameID, hash3[0], hash3[1]]);
 
-    field ex = 0
+    assert(hash4[0] == shaValue[0]);
+    assert(hash4[1] == shaValue[1]);
 
-    for field i in 0..4 do
-        field e = if pw[i] == c then 1 else 0 fi
-        ex = ex + e
-    endfor
+    field mut ex = 0;
 
-    for field i in 0..4 do
-        field e = if pl[i] == c then 1 else 0 fi
-        ex = ex + e
-    endfor
+    for u32 i in 0..4 {
+        field e = if pw[i] == c { 1 } else { 0 };
+        ex = ex + e;
+    }
+
+    for u32 i in 0..4 {
+        field e = if pl[i] == c { 1 } else { 0 };
+        ex = ex + e;
+    }
 
 {{content}}
 
-    field[5] wcomb = [pw[0], pw[1], pw[2], pw[3], c]
+    field[5] wcomb = [pw[0], pw[1], pw[2], pw[3], c];
 
-    field r = 0
+    field mut r = 0;
 
-    field[3] comb0 = [0, 1, 2]
-    field[3] comb1 = [3, 4, 5]
-    field[3] comb2 = [6, 7, 8]
+    field[3] comb0 = [0, 1, 2];
+    field[3] comb1 = [3, 4, 5];
+    field[3] comb2 = [6, 7, 8];
 
-    field[3] comb3 = [0, 3, 6]
-    field[3] comb4 = [1, 4, 7]
-    field[3] comb5 = [2, 5, 8]
+    field[3] comb3 = [0, 3, 6];
+    field[3] comb4 = [1, 4, 7];
+    field[3] comb5 = [2, 5, 8];
 
-    field[3] comb6 = [0, 4, 8]
-    field[3] comb7 = [2, 4, 6]
+    field[3] comb6 = [0, 4, 8];
+    field[3] comb7 = [2, 4, 6];
 
 {{combs}}
 
 
-    field fr = ex + if r==0 then 1 else 0 fi
-    fr == 0
+    field fr = ex + if r==0 { 1 } else { 0 };
+    assert(fr == 0);
 
-    return 1
+    return 1;
+}
